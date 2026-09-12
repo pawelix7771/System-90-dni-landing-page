@@ -13,23 +13,30 @@ export interface Env {
 async function saveEvent(
   env: Env,
   row: {
-    event_type: string;
+    stripe_session_id: string;
+    customer_email: string | null;
+    amount_total: number | null;
     video_id: string;
     utm_source: string;
-    amount: number | null;
-    stripe_session_id: string;
+    status: "completed" | "expired";
   }
 ) {
-  const res = await fetch(`${env.SUPABASE_URL}/rest/v1/checkout_events`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      apikey: env.SUPABASE_SERVICE_KEY,
-      Authorization: `Bearer ${env.SUPABASE_SERVICE_KEY}`,
-      Prefer: "return=minimal",
-    },
-    body: JSON.stringify(row),
-  });
+  // Upsert po stripe_session_id (kolumna ma UNIQUE w Twoim schemacie) —
+  // gdyby Stripe kiedyś dostarczył ten sam event dwa razy, drugi zapis
+  // nadpisze wiersz zamiast wywalić się błędem unikalności.
+  const res = await fetch(
+    `${env.SUPABASE_URL}/rest/v1/checkout_events?on_conflict=stripe_session_id`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        apikey: env.SUPABASE_SERVICE_KEY,
+        Authorization: `Bearer ${env.SUPABASE_SERVICE_KEY}`,
+        Prefer: "resolution=merge-duplicates,return=minimal",
+      },
+      body: JSON.stringify(row),
+    }
+  );
 
   if (!res.ok) {
     const text = await res.text();
@@ -105,21 +112,22 @@ export async function handleStripeWebhook(request: Request, env: Env) {
     event.type === "checkout.session.expired"
   ) {
     const session = event.data.object as Stripe.Checkout.Session;
+    const email = session.customer_details?.email ?? null;
 
     try {
       await saveEvent(env, {
-        event_type: event.type,
+        stripe_session_id: session.id,
+        customer_email: email,
+        amount_total: session.amount_total,
         video_id: session.metadata?.video_id ?? "brak",
         utm_source: session.metadata?.utm_source ?? "brak",
-        amount: session.amount_total,
-        stripe_session_id: session.id,
+        status: event.type === "checkout.session.completed" ? "completed" : "expired",
       });
     } catch (err) {
       console.error("Błąd zapisu do Supabase:", err);
     }
 
     if (event.type === "checkout.session.completed") {
-      const email = session.customer_details?.email;
       if (email) {
         try {
           await sendConfirmationEmail(env, email, session.id);
