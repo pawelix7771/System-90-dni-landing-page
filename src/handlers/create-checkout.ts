@@ -64,11 +64,16 @@ export async function handleCreateCheckout(
       status: 200,
       headers: { "Content-Type": "application/json" },
     });
-  } catch (err) {
+  } catch (err: any) {
     console.error("Stripe checkout error:", err);
     return new Response(
-      JSON.stringify({ error: "Nie udało się utworzyć sesji płatności." }),
+      JSON.stringify({ 
+        error: err?.message || "Nie udało się utworzyć sesji płatności.",
+        type: err?.type,
+        code: err?.code
+      }),
       { status: 500, headers: { "Content-Type": "application/json" } }
     );
+  }
   }
 }
