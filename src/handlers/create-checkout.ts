@@ -4,7 +4,6 @@ import Stripe from "stripe";
 // Logika create-checkout — przeniesiona z functions/api/create-checkout.ts
 // (konwencja klasycznych Cloudflare Pages) do zwykłej funkcji wołanej
 // przez router w src/index.ts (nowy, ujednolicony model Workers).
-// Sama logika Stripe jest identyczna jak wcześniej.
 // ————————————————————————————————————————————————
 
 export interface Env {
@@ -36,6 +35,14 @@ export async function handleCreateCheckout(
 
   const { video_id, utm_source } = body;
 
+  // 1. Wyznaczenie bezpiecznego URL bazowego z protokołem https://
+  let baseUrl = env.SITE_URL || new URL(request.url).origin;
+
+  if (!baseUrl.startsWith("http://") && !baseUrl.startsWith("https://")) {
+    baseUrl = `https://${baseUrl}`;
+  }
+  baseUrl = baseUrl.replace(/\/$/, ""); // Usuwa ewentualny slash z końca
+
   try {
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
@@ -56,8 +63,9 @@ export async function handleCreateCheckout(
         video_id: video_id ?? "brak",
         utm_source: utm_source ?? "brak",
       },
-      success_url: `${env.SITE_URL}/dziekujemy?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${env.SITE_URL}/?anulowano=1`,
+      // 2. Użycie bezpiecznej zmiennej baseUrl z doklejonym https://
+      success_url: `${baseUrl}/dziekujemy?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${baseUrl}/?anulowano=1`,
     });
 
     return new Response(JSON.stringify({ url: session.url }), {
@@ -75,5 +83,4 @@ export async function handleCreateCheckout(
       { status: 500, headers: { "Content-Type": "application/json" } }
     );
   }
-  }
-
+}
