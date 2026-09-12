@@ -65,4 +65,5 @@
   margin-top: 32px;
   font-size: 13px;
   color: var(--ink-soft);
+  word-break: break-all;
 }
