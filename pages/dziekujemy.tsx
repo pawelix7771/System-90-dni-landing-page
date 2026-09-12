@@ -32,11 +32,10 @@ export default function ThankYou() {
         <p className={styles.body}>
           Nie widzisz wiadomości w ciągu kilku minut? Sprawdź
           folder spam albo napisz do nas — pomożemy ręcznie.
+          <br /><br />
+          <b>W razie problemów prosimy o kontakt na adres  e-mail: ogarnijpieniadze@wp.pl</b>
         </p>
 
-        <a className={styles.ctaButton} href="mailto:kontakt@ogarnijpieniadze.pl">
-          Napisz do nas
-        </a>
 
         {sessionId && (
           <p className={styles.orderId}>Numer zamówienia: {sessionId}</p>
