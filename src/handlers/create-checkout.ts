@@ -46,7 +46,7 @@ export async function handleCreateCheckout(
   try {
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
-      automatic_payment_methods: { enabled: true },
+      automatic_payment_methods: { "blik", "card" },
       line_items: [
         {
           price_data: {
