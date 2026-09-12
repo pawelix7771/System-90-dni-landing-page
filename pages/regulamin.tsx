@@ -19,7 +19,7 @@ export default function Regulamin() {
         </a>
         <h1 className={styles.title}>Regulamin sklepu internetowego</h1>
         <p className={styles.updated}>
-          Ostatnia aktualizacja: <span className={styles.placeholder}>[DATA]</span>
+          Ostatnia aktualizacja: <span className={styles.placeholder}>11.09.2026</span>
         </p>
 
         <h2>§1. Postanowienia ogólne</h2>
