@@ -12,8 +12,8 @@
     "next": "^16.3.4",
     "react": "^19.3.0",
     "react-dom": "^19.3.0",
-    "stripe": "^22.6.2",
-    "resend": "^4.1.0"
+    "resend": "^6.28.0",
+    "stripe": "^22.6.2"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^5.20260910.1",
