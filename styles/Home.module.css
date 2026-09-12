@@ -1,0 +1,386 @@
+/*
+  Design tokens
+  — paper: bazowe tło strony
+  — paper-deep: cieplejszy odcień pod hero (subtelna warstwa, nie płasko)
+  — navy-tint: chłodny, bardzo jasny granat pod sekcją problemu — rytm
+  — ink: głęboki granat, tekst i sekcja "dowód"
+  — brass: jedyny mocny akcent, zarezerwowany dla CTA i wielkiej liczby
+*/
+.page {
+  --paper: #f3efe4;
+  --paper-deep: #ece4d1;
+  --navy-tint: #eef1f3;
+  --ink: #1c2b3a;
+  --ink-soft: #4a5a6a;
+  --ink-deep: #16222e;
+  --brass: #c89b3c;
+  --brass-dark: #a67f2e;
+  --brass-tint: #f6ead0;
+  --line: #d8d0bc;
+  --white: #ffffff;
+
+  background: var(--paper);
+  color: var(--ink);
+  font-family: "IBM Plex Sans", system-ui, sans-serif;
+  line-height: 1.6;
+}
+
+.page h1,
+.page h2 {
+  font-family: "Fraunces", Georgia, serif;
+  font-weight: 600;
+}
+
+/* Wspólny wrapper ograniczający szerokość treści wewnątrz
+   pełnoszerokościowych sekcji z tłem */
+.inner {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* NAV */
+.navSection {
+  padding: 24px 0;
+}
+.wordmark {
+  font-family: "Fraunces", Georgia, serif;
+  font-size: 18px;
+  letter-spacing: 0.02em;
+}
+
+/* HERO — delikatny gradient zamiast płaskiego tła */
+.heroSection {
+  background: linear-gradient(180deg, var(--paper) 0%, var(--paper-deep) 100%);
+  padding: 32px 0 56px;
+}
+.hero {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+.heroText {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.heroNumber {
+  font-family: "Fraunces", Georgia, serif;
+  font-size: 64px;
+  line-height: 1;
+  color: var(--brass-dark);
+  margin: 0 0 4px;
+}
+.heroHeadline {
+  font-size: 28px;
+  line-height: 1.25;
+  margin: 0 0 16px;
+  max-width: 22ch;
+}
+.heroSub {
+  font-size: 16px;
+  color: var(--ink-soft);
+  max-width: 42ch;
+  margin: 0 0 24px;
+}
+
+.ctaButton,
+.ctaButtonLight {
+  /* Fix wyrównania: heroText jest lewo-wyrównany (align-items:
+     flex-start), więc przycisk zaczyna się przy lewej krawędzi
+     (margin bez auto) zamiast się centrować — inaczej wyglądał jak
+     "wyskakujący" na środek wśród lewo-wyrównanego tekstu. */
+  width: calc(100% - 32px);
+  max-width: 400px;
+  display: block;
+  margin: 30px 0 0 0;
+  text-align: center;
+  border: none;
+  border-radius: 6px;
+  padding: 16px 28px;
+  font-family: "IBM Plex Sans", sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+.ctaButton {
+  background: var(--brass);
+  color: var(--ink);
+  box-shadow: 0 6px 16px rgba(166, 127, 46, 0.28);
+}
+.ctaButton:hover:not(:disabled) {
+  background: var(--brass-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 22px rgba(166, 127, 46, 0.34);
+}
+.ctaButton:focus-visible,
+.ctaButtonLight:focus-visible {
+  outline: 3px solid var(--ink);
+  outline-offset: 2px;
+}
+.ctaButton:disabled,
+.ctaButtonLight:disabled {
+  opacity: 0.6;
+  cursor: default;
+  box-shadow: none;
+}
+
+/* Zdjęcie arkusza — miękki, rozlany cień zamiast twardej ramki,
+   lekkie zaokrąglenie dla nowocześniejszego charakteru */
+.heroImage {
+  width: 100%;
+}
+.floatingSheet {
+  width: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  /* Poprawka renderowania obcinania w przeglądarkach */
+  isolation: isolate;
+  transform: translateZ(0);
+  box-shadow: 0 24px 48px -12px rgba(28, 43, 58, 0.35),
+    0 4px 12px rgba(28, 43, 58, 0.12);
+}
+
+.floatingSheet img {
+  display: block;
+  width: 100%;
+  height: auto;
+  /* Przeniesienie zaokrąglenia bezpośrednio na obrazek */
+  border-radius: inherit;
+}
+
+/* PROBLEM — chłodny, bardzo jasny granatowy blok dla rytmu kolorów */
+.problemSection {
+  background: var(--navy-tint);
+  padding: 40px 0;
+}
+.problemText {
+  font-size: 17px;
+  color: var(--ink-soft);
+  max-width: 48ch;
+  margin: 0;
+}
+
+/* SECTION HEADINGS */
+.sectionHeading {
+  font-size: 22px;
+  margin: 0 0 24px;
+  color: var(--ink);
+}
+.sectionHeadingLight {
+  font-size: 22px;
+  margin: 0 0 24px;
+  color: var(--paper);
+}
+
+/* LEDGER TABLE — wiersze z naprzemiennym tłem zamiast samych linii */
+.ledgerSection {
+  padding: 56px 0;
+}
+.ledgerTable {
+  display: flex;
+  flex-direction: column;
+  border-radius: 12px;
+  overflow: hidden;
+}
+.ledgerRow {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 20px;
+}
+.ledgerRowAlt {
+  background: var(--paper-deep);
+}
+.ledgerName {
+  font-family: "Fraunces", Georgia, serif;
+  font-size: 17px;
+}
+.ledgerDesc {
+  font-size: 15px;
+  color: var(--ink-soft);
+  max-width: 46ch;
+}
+.ledgerCtaText {
+  text-align: center;
+  font-family: "Fraunces", Georgia, serif;
+  font-size: 18px;
+  color: var(--ink);
+  margin: 8px 0 0;
+}
+
+/* PROOF — ciemna, kontrastowa sekcja dla głębi.
+   border-radius usunięty: sekcja jest pełnoszerokościowa (bez
+   marginesu od krawędzi ekranu), więc zaokrąglenie rogów i tak
+   nie było widoczne — róg wypadał poza kadrem widocznego okna. */
+.proofSection {
+  background: var(--ink-deep);
+  padding: 36px 0;
+}
+.proofGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* QUOTE — ciepły, jasny blok akcentowy */
+.quoteSection {
+  background: var(--brass-tint);
+  padding: 48px 0;
+  text-align: center;
+}
+.quoteText {
+  font-family: "Fraunces", Georgia, serif;
+  font-size: 22px;
+  line-height: 1.4;
+  margin: 0 0 12px;
+}
+.quoteSource {
+  font-size: 14px;
+  color: var(--ink-soft);
+  margin: 0;
+}
+
+/* FAQ — miękkie karty zamiast twardych linii */
+.faqSection {
+  padding: 56px 0;
+}
+.faqList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.faqItem {
+  background: var(--white);
+  border-radius: 10px;
+  padding: 4px 20px;
+  box-shadow: 0 2px 8px rgba(28, 43, 58, 0.06);
+}
+.faqQuestion {
+  width: 100%;
+  background: none;
+  border: none;
+  text-align: left;
+  font-family: "IBM Plex Sans", sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--ink);
+  padding: 18px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+}
+.faqQuestion:focus-visible {
+  outline: 3px solid var(--ink);
+  outline-offset: 2px;
+}
+.faqAnswer {
+  color: var(--ink-soft);
+  font-size: 15px;
+  margin: 0 0 18px;
+  max-width: 46ch;
+}
+
+/* FINAL CTA */
+.finalCtaSection {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 48px 0;
+}
+.finalCtaSection .inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  text-align: center;
+}
+.finalCtaText {
+  font-family: "Fraunces", Georgia, serif;
+  font-size: 20px;
+  max-width: 30ch;
+  margin: 0;
+}
+.ctaButtonLight {
+  background: var(--brass);
+  color: var(--ink);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+  /* W tej sekcji .inner jest wyśrodkowany (align-items: center),
+     więc tu margin auto-center jest spójny z resztą sekcji —
+     w przeciwieństwie do hero, gdzie tekst jest lewo-wyrównany. */
+  margin: 0 auto;
+}
+.ctaButtonLight:hover:not(:disabled) {
+  background: #dcb35a;
+  transform: translateY(-2px);
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .ctaButton,
+  .ctaButtonLight {
+    transition: none;
+  }
+}
+
+/* Tablet+ */
+@media (min-width: 720px) {
+  .hero {
+    flex-direction: row;
+    align-items: center;
+  }
+  .heroText {
+    flex: 1;
+  }
+  .heroImage {
+    flex: 1;
+  }
+  .proofGrid {
+    flex-direction: row;
+  }
+}
+
+/* Zgoda przy przycisku zakupu — checkbox RODO/prawa odstąpienia,
+   powtórzony przy każdym z trzech CTA na stronie */
+.consentLabel {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin: 16px 0 4px;
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--ink-soft);
+  max-width: 34ch;
+  cursor: pointer;
+  text-align: left;
+}
+.consentLabel input {
+  margin-top: 3px;
+  flex-shrink: 0;
+}
+.consentLabel a {
+  color: var(--ink);
+  text-decoration: underline;
+}
+/* Wariant na ciemnym tle (finalna sekcja CTA) */
+.consentLabelLight {
+  color: var(--paper-deep);
+  margin-left: auto;
+  margin-right: auto;
+}
+.consentLabelLight a {
+  color: var(--paper);
+}
+
+/* Stopka z linkami do dokumentów prawnych */
+.footer {
+  padding: 24px 0 40px;
+  text-align: center;
+}
+.footer a {
+  color: var(--ink-soft);
+  font-size: 13px;
+  text-decoration: underline;
+}

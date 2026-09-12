@@ -1,0 +1,74 @@
+.page {
+  --paper: #f3efe4;
+  --ink: #1c2b3a;
+  --ink-soft: #4a5a6a;
+  --brass: #c89b3c;
+  --line: #d8d0bc;
+
+  background: var(--paper);
+  color: var(--ink);
+  font-family: "IBM Plex Sans", system-ui, sans-serif;
+  line-height: 1.65;
+  min-height: 100vh;
+}
+
+.inner {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 40px 20px 80px;
+}
+
+.backLink {
+  display: inline-block;
+  color: var(--ink-soft);
+  text-decoration: none;
+  font-size: 14px;
+  margin-bottom: 24px;
+}
+.backLink:hover {
+  text-decoration: underline;
+}
+
+.title {
+  font-family: "Fraunces", Georgia, serif;
+  font-size: 30px;
+  margin: 0 0 8px;
+}
+
+.updated {
+  font-size: 14px;
+  color: var(--ink-soft);
+  margin: 0 0 40px;
+}
+
+.page h2 {
+  font-family: "Fraunces", Georgia, serif;
+  font-size: 20px;
+  margin: 40px 0 12px;
+  border-top: 1px solid var(--line);
+  padding-top: 24px;
+}
+
+.page p,
+.page li {
+  font-size: 15px;
+  color: var(--ink-soft);
+  margin: 0 0 12px;
+}
+
+.page ul,
+.page ol {
+  padding-left: 20px;
+}
+
+.page strong {
+  color: var(--ink);
+}
+
+.placeholder {
+  background: #f6ead0;
+  padding: 1px 4px;
+  border-radius: 3px;
+  color: var(--ink);
+  font-weight: 600;
+}
