@@ -1,21 +1,5 @@
 import Stripe from "stripe";
 
-// ————————————————————————————————————————————————
-// Logika stripe-webhook — przeniesiona z functions/api/stripe-webhook.ts
-// (konwencja klasycznych Cloudflare Pages) do zwykłej funkcji wołanej
-// przez router w src/index.ts. Cała logika Stripe/Supabase/Resend jest
-// identyczna jak wcześniej, zmienia się tylko sposób jej wywołania.
-//
-// Zmienne środowiskowe wymagane (Worker → Settings → Variables):
-//   STRIPE_SECRET_KEY      — ten sam co w create-checkout
-//   STRIPE_WEBHOOK_SECRET  — z Stripe Dashboard → Webhooks → wybrany endpoint
-//   SUPABASE_URL           — np. https://xxxx.supabase.co
-//   SUPABASE_SERVICE_KEY   — klucz service_role (NIE anon key)
-//   RESEND_API_KEY         — z resend.com
-//   RESEND_FROM            — adres nadawcy na zweryfikowanej domenie
-//   GOOGLE_SHEET_URL       — link "Zrób kopię" do szablonu arkusza
-// ————————————————————————————————————————————————
-
 export interface Env {
   STRIPE_SECRET_KEY: string;
   STRIPE_WEBHOOK_SECRET: string;
@@ -24,7 +8,6 @@ export interface Env {
   RESEND_API_KEY: string;
   RESEND_FROM: string;
   GOOGLE_SHEET_URL: string;
-  ASSETS: Fetcher;
 }
 
 async function saveEvent(
@@ -54,7 +37,11 @@ async function saveEvent(
   }
 }
 
-async function sendConfirmationEmail(env: Env, to: string, orderId: string) {
+async function sendConfirmationEmail(
+  env: Env,
+  to: string,
+  orderId: string
+) {
   const res = await fetch("https://api.resend.com/emails", {
     method: "POST",
     headers: {
@@ -88,12 +75,9 @@ async function sendConfirmationEmail(env: Env, to: string, orderId: string) {
   }
 }
 
-export async function handleStripeWebhook(
-  request: Request,
-  env: Env
-): Promise<Response> {
+export async function handleStripeWebhook(request: Request, env: Env) {
   const stripe = new Stripe(env.STRIPE_SECRET_KEY, {
-    apiVersion: "2026-08-26.dahlia",
+    apiVersion: "2026-08-26.dahlia" as any,
     httpClient: Stripe.createFetchHttpClient(),
   });
 
