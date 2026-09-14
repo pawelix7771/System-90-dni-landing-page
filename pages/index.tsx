@@ -176,8 +176,7 @@ export default function Home() {
               w dniu wypłaty — i wiesz, ile możesz wydać
             </h1>
             <p className={styles.heroSub}>
-              Wpisujesz kwotę, arkusz sam dzieli ją na rachunki, długi
-              i oszczędności. Nic nie musisz sam tworzyć.
+              Rozpisujesz kwotę wydatki — arkusz automatycznie liczy, ile zostaje i ile odkładasz!
             </p>
 
             <ConsentCheckbox checked={consentGiven} onChange={setConsentGiven} />
